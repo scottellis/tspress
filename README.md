@@ -12,15 +12,10 @@ Assuming Qt5 dev libraries and headers are already installed.
 
 ### Operation
 
-Run from a shell so you can see the output.
-
 The UI places 5 buttons along the top of the screen.
-
-Pressing the buttons will generate output to stdout.
 
 You can test with a real USB mouse connected or by using the
 touchscreen directly.
-
     
 ### Run under X11
 

@@ -36,6 +36,7 @@
 #include <qpushbutton.h>
 #include <qlist.h>
 #include <qsignalmapper.h>
+#include <qlabel.h>
 
 class TsPress : public QMainWindow
 {
@@ -52,6 +53,7 @@ private:
 
 	QSignalMapper *m_signalMap;
 	QList<QPushButton *> m_btns;
+    QLabel *m_output;
 	QPushButton *m_exitButton;
 };
 

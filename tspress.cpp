@@ -30,8 +30,6 @@
  */
 
 #include "tspress.h"
-#include <qdebug.h>
-#include <qevent.h>
 #include <qboxlayout.h>
 
 TsPress::TsPress(QWidget *parent)
@@ -46,7 +44,7 @@ TsPress::TsPress(QWidget *parent)
 
 void TsPress::onPressed(int btn)
 {
-	qDebug() << "Button : " << btn;
+    m_output->setText(QString("Button : %1").arg(btn));
 }
 
 void TsPress::layoutWindow()
@@ -76,12 +74,20 @@ void TsPress::layoutWindow()
 	exitLayout->addWidget(m_exitButton);
 	exitLayout->addStretch();
 
+    m_output = new QLabel;
+   
+    QHBoxLayout *outputLayout = new QHBoxLayout;
+    outputLayout->addStretch();
+    outputLayout->addWidget(m_output);
+    outputLayout->addStretch();
+ 
 	QVBoxLayout *vLayout = new QVBoxLayout;
 
 	vLayout->addLayout(btnLayout);
 	vLayout->addStretch();	
 	vLayout->addLayout(exitLayout);
 	vLayout->addStretch();
+    vLayout->addLayout(outputLayout);
 
 	QWidget *widget = new QWidget;
 	widget->setLayout(vLayout);

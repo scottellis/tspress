@@ -58,9 +58,24 @@ I know the driver is `ft5x0x_ts`.
 
 That's after running
 
-    # chmod o+rw /dev/input/input2
-    # ln -s /dev/input/input2 /dev/input/touchscreen
+    # chmod o+rw /dev/input/event2
+    # ln -s /dev/input/event2 /dev/input/touchscreen
 
 The *touchscreen* link is not necessary. The permissions change 
 or adding the user to the *input* group is necessary.
+
+A simple test to see if you got the write `/dev/input` device is to
+run the following then move your finger around the screen.
+
+    $ cat /dev/input/input2 | hexdump
+    0000000 8df8 552e ce89 0003 0003 0030 00c8 0000
+    0000010 8df8 552e ce89 0003 0003 0035 01b4 0000
+    0000020 8df8 552e ce89 0003 0003 0036 0150 0000
+    0000030 8df8 552e ce89 0003 0003 0032 0001 0000
+    ...
+    0000730 8df8 552e 2bd6 0007 0003 0030 0000 0000
+    0000740 8df8 552e 2bd6 0007 0000 0002 0000 0000
+    0000750 8df8 552e 2bd6 0007 0001 014a 0000 0000
+    0000760 8df8 552e 2bd6 0007 0000 0000 0000 0000
+    ^C
 

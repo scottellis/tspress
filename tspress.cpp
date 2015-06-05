@@ -33,12 +33,16 @@
 #include <qboxlayout.h>
 #include <qformlayout.h>
 #include <qevent.h>
+#include <qpainter.h>
 #include <qdebug.h>
 
 TsPress::TsPress(QWidget *parent)
 	: QMainWindow(parent)
 {
 	setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+
+    m_down.setX(-1);
+    m_up.setX(-1);
 
 	layoutWindow();
 
@@ -48,16 +52,47 @@ TsPress::TsPress(QWidget *parent)
 void TsPress::onPressed(int btn)
 {
     m_which->setText(QString("Button: %1").arg(btn));
+    m_down.setX(-1);
+    m_up.setX(-1);
+    update();
 }
 
 void TsPress::mousePressEvent(QMouseEvent *event)
 {
     qDebug() << "Down:" << event->x() << event->y();
+    m_down = event->pos();
+    m_up.setX(-1);
+    update();
 }
 
 void TsPress::mouseReleaseEvent(QMouseEvent *event)
 {
     qDebug() << "Up  :" << event->x() << event->y();
+    m_up = event->pos();
+    update();
+}
+
+void TsPress::paintEvent(QPaintEvent *)
+{
+    if (m_down.x() < 0 && m_up.x() < 0)
+        return;
+
+    QPainter painter(this);
+
+    if (m_down.x() >= 0 && m_down != m_up) {
+        painter.drawLine(m_down.x() - 6, m_down.y(), m_down.x() + 6, m_down.y());
+        painter.drawLine(m_down.x(), m_down.y() - 6, m_down.x(), m_down.y() + 6);
+    }
+
+    if (m_up.x() >= 0) {
+        QPen pen;
+
+        pen.setColor(Qt::red);
+        painter.setPen(pen);
+
+        painter.drawLine(m_up.x() - 6, m_up.y(), m_up.x() + 6, m_up.y());
+        painter.drawLine(m_up.x(), m_up.y() - 6, m_up.x(), m_up.y() + 6);
+    }
 }
 
 void TsPress::layoutWindow()
@@ -68,14 +103,14 @@ void TsPress::layoutWindow()
 
     for (int i = 0; i < 12; i++) {
         btn = new QPushButton(QString::number(i+1));
-        btn->setFixedSize(60, 40);
+        btn->setFixedSize(60, 50);
         m_signalMap->setMapping(btn, i+1);
 		connect(btn, SIGNAL(pressed()), m_signalMap, SLOT(map()));
 		m_btns.append(btn);
 	}
 
     m_exitButton = new QPushButton("Exit");
-    m_exitButton->setMinimumSize(60, 40);
+    m_exitButton->setMinimumSize(60, 50);
     m_which = new QLabel("Click a button");
     m_which->setStyleSheet("font-size: 18px;");
 
@@ -125,4 +160,5 @@ void TsPress::layoutWindow()
     widget->setLayout(mainLayout);
 
 	setCentralWidget(widget);
+    setAutoFillBackground(true);
 }

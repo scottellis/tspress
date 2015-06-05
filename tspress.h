@@ -51,6 +51,7 @@ public slots:
 protected:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
+    void paintEvent(QPaintEvent *);
 
 private:
 	void layoutWindow();
@@ -59,6 +60,8 @@ private:
 	QList<QPushButton *> m_btns;
     QLabel *m_which;
 	QPushButton *m_exitButton;
+    QPoint m_down;
+    QPoint m_up;
 };
 
 #endif // TSPRESS_H

@@ -48,12 +48,16 @@ public:
 public slots:
 	void onPressed(int btn);
 
+protected:
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+
 private:
 	void layoutWindow();
 
 	QSignalMapper *m_signalMap;
 	QList<QPushButton *> m_btns;
-    QLabel *m_output;
+    QLabel *m_which;
 	QPushButton *m_exitButton;
 };
 

@@ -31,6 +31,9 @@
 
 #include "tspress.h"
 #include <qboxlayout.h>
+#include <qformlayout.h>
+#include <qevent.h>
+#include <qdebug.h>
 
 TsPress::TsPress(QWidget *parent)
 	: QMainWindow(parent)
@@ -44,7 +47,17 @@ TsPress::TsPress(QWidget *parent)
 
 void TsPress::onPressed(int btn)
 {
-    m_output->setText(QString("Button: %1").arg(btn));
+    m_which->setText(QString("Button: %1").arg(btn));
+}
+
+void TsPress::mousePressEvent(QMouseEvent *event)
+{
+    qDebug() << "Down:" << event->x() << event->y();
+}
+
+void TsPress::mouseReleaseEvent(QMouseEvent *event)
+{
+    qDebug() << "Up  :" << event->x() << event->y();
 }
 
 void TsPress::layoutWindow()
@@ -63,11 +76,10 @@ void TsPress::layoutWindow()
 
     m_exitButton = new QPushButton("Exit");
     m_exitButton->setMinimumSize(60, 40);
-    m_output = new QLabel("Click a button");
-    m_output->setStyleSheet("font-size: 16px;");
+    m_which = new QLabel("Click a button");
+    m_which->setStyleSheet("font-size: 18px;");
 
-
-    QVBoxLayout *vLayout = new QVBoxLayout;
+    QVBoxLayout *mainLayout = new QVBoxLayout;
 
     QHBoxLayout *btnLayout = new QHBoxLayout;
 
@@ -78,8 +90,8 @@ void TsPress::layoutWindow()
             btnLayout->addStretch();
     }
 
-    vLayout->addLayout(btnLayout);
-    vLayout->addStretch();
+    mainLayout->addLayout(btnLayout);
+    mainLayout->addStretch();
 
     btnLayout = new QHBoxLayout;
     btnLayout->addWidget(m_btns.at(5));
@@ -87,16 +99,16 @@ void TsPress::layoutWindow()
     btnLayout->addWidget(m_exitButton);
     btnLayout->addStretch();
     btnLayout->addWidget(m_btns.at(6));
-    vLayout->addLayout(btnLayout);
+    mainLayout->addLayout(btnLayout);
 
     QHBoxLayout *outputLayout = new QHBoxLayout;
     outputLayout->addStretch();
-    outputLayout->addWidget(m_output);
+    outputLayout->addWidget(m_which);
     outputLayout->addStretch();
  
-    vLayout->addSpacing(8);
-    vLayout->addLayout(outputLayout);
-    vLayout->addStretch();
+    mainLayout->addSpacing(8);
+    mainLayout->addLayout(outputLayout);
+    mainLayout->addStretch();
 
     btnLayout = new QHBoxLayout;
 
@@ -107,10 +119,10 @@ void TsPress::layoutWindow()
             btnLayout->addStretch();
     }
 
-    vLayout->addLayout(btnLayout);
+    mainLayout->addLayout(btnLayout);
 
 	QWidget *widget = new QWidget;
-	widget->setLayout(vLayout);
+    widget->setLayout(mainLayout);
 
 	setCentralWidget(widget);
 }

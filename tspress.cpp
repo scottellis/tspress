@@ -44,54 +44,73 @@ TsPress::TsPress(QWidget *parent)
 
 void TsPress::onPressed(int btn)
 {
-    m_output->setText(QString("Button : %1").arg(btn));
+    m_output->setText(QString("Button: %1").arg(btn));
 }
 
 void TsPress::layoutWindow()
 {
-	m_exitButton = new QPushButton("Exit");
-	m_exitButton->setMinimumSize(60, 40);
-
+    QPushButton *btn;
 	m_signalMap = new QSignalMapper(this);
 	connect(m_signalMap, SIGNAL(mapped(int)), SLOT(onPressed(int)));
 
-	QHBoxLayout *btnLayout = new QHBoxLayout;
-
-	for (int i = 0; i < 5; i++) {
-		QPushButton *btn = new QPushButton(QString::number(i));
+    for (int i = 0; i < 12; i++) {
+        btn = new QPushButton(QString::number(i+1));
 		btn->setFixedSize(50, 30);
-		m_signalMap->setMapping(btn, i);
+        m_signalMap->setMapping(btn, i+1);
 		connect(btn, SIGNAL(pressed()), m_signalMap, SLOT(map()));
 		m_btns.append(btn);
-		btnLayout->addWidget(btn);
-
-		if (i < 4)
-			btnLayout->addStretch();
 	}
 
-	QHBoxLayout *exitLayout = new QHBoxLayout;
-	exitLayout->addStretch();
-	exitLayout->addWidget(m_exitButton);
-	exitLayout->addStretch();
+    m_exitButton = new QPushButton("Exit");
+    m_exitButton->setMinimumSize(60, 40);
+    m_output = new QLabel("Click a button");
+    m_output->setStyleSheet("font-size: 16px;");
 
-    m_output = new QLabel;
-   
+
+    QVBoxLayout *vLayout = new QVBoxLayout;
+
+    QHBoxLayout *btnLayout = new QHBoxLayout;
+
+    for (int i = 0; i < 5; i++) {
+        btnLayout->addWidget(m_btns.at(i));
+
+        if (i < 4)
+            btnLayout->addStretch();
+    }
+
+    vLayout->addLayout(btnLayout);
+    vLayout->addStretch();
+
+    btnLayout = new QHBoxLayout;
+    btnLayout->addWidget(m_btns.at(5));
+    btnLayout->addStretch();
+    btnLayout->addWidget(m_exitButton);
+    btnLayout->addStretch();
+    btnLayout->addWidget(m_btns.at(6));
+    vLayout->addLayout(btnLayout);
+
     QHBoxLayout *outputLayout = new QHBoxLayout;
     outputLayout->addStretch();
     outputLayout->addWidget(m_output);
     outputLayout->addStretch();
  
-	QVBoxLayout *vLayout = new QVBoxLayout;
-
-	vLayout->addLayout(btnLayout);
-	vLayout->addStretch();	
-	vLayout->addLayout(exitLayout);
-	vLayout->addStretch();
+    vLayout->addSpacing(8);
     vLayout->addLayout(outputLayout);
+    vLayout->addStretch();
+
+    btnLayout = new QHBoxLayout;
+
+    for (int i = 7; i < 12; i++) {
+        btnLayout->addWidget(m_btns.at(i));
+
+        if (i < 11)
+            btnLayout->addStretch();
+    }
+
+    vLayout->addLayout(btnLayout);
 
 	QWidget *widget = new QWidget;
 	widget->setLayout(vLayout);
 
 	setCentralWidget(widget);
 }
-

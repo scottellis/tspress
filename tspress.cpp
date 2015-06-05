@@ -68,7 +68,7 @@ void TsPress::layoutWindow()
 
     for (int i = 0; i < 12; i++) {
         btn = new QPushButton(QString::number(i+1));
-		btn->setFixedSize(50, 30);
+        btn->setFixedSize(60, 40);
         m_signalMap->setMapping(btn, i+1);
 		connect(btn, SIGNAL(pressed()), m_signalMap, SLOT(map()));
 		m_btns.append(btn);

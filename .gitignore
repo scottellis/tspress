@@ -2,3 +2,4 @@ tspress
 Makefile
 GeneratedFiles/
 Objects/
+*.user

@@ -44,7 +44,6 @@ TsPress::TsPress(QWidget *parent)
     m_down.setX(-1);
     m_up.setX(-1);
 
-    initStyleSheets();
 	layoutWindow();
 
 	connect(m_exitButton, SIGNAL(pressed()), SLOT(close()));
@@ -81,8 +80,9 @@ void TsPress::paintEvent(QPaintEvent *)
     QPainter painter(this);
 
     if (m_down.x() >= 0 && m_down != m_up) {
-        painter.drawLine(m_down.x() - 6, m_down.y(), m_down.x() + 6, m_down.y());
-        painter.drawLine(m_down.x(), m_down.y() - 6, m_down.x(), m_down.y() + 6);
+        qDebug() << "paint down";
+        painter.drawLine(m_down.x() - 8, m_down.y(), m_down.x() + 8, m_down.y());
+        painter.drawLine(m_down.x(), m_down.y() - 8, m_down.x(), m_down.y() + 8);
     }
 
     if (m_up.x() >= 0) {
@@ -90,9 +90,9 @@ void TsPress::paintEvent(QPaintEvent *)
 
         pen.setColor(Qt::red);
         painter.setPen(pen);
-
-        painter.drawLine(m_up.x() - 6, m_up.y(), m_up.x() + 6, m_up.y());
-        painter.drawLine(m_up.x(), m_up.y() - 6, m_up.x(), m_up.y() + 6);
+        qDebug() << "paint up";
+        painter.drawLine(m_up.x() - 8, m_up.y(), m_up.x() + 8, m_up.y());
+        painter.drawLine(m_up.x(), m_up.y() - 8, m_up.x(), m_up.y() + 8);
     }
 }
 
@@ -105,18 +105,16 @@ void TsPress::layoutWindow()
     for (int i = 0; i < 12; i++) {
         btn = new QPushButton(QString::number(i+1));
         btn->setFixedSize(60, 50);
-        btn->setStyleSheet(m_btnStyle);
         m_signalMap->setMapping(btn, i+1);
 		connect(btn, SIGNAL(pressed()), m_signalMap, SLOT(map()));
 		m_btns.append(btn);
 	}
 
     m_exitButton = new QPushButton("Exit");
-    m_exitButton->setMinimumSize(60, 50);
-    m_exitButton->setStyleSheet(m_btnStyle);
+    m_exitButton->setMinimumSize(80, 50);
 
     m_which = new QLabel("#");
-    m_which->setStyleSheet(m_lblStyle);
+    m_which->setStyleSheet("font-size: 28pt; color: red;");
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
@@ -164,19 +162,4 @@ void TsPress::layoutWindow()
     widget->setLayout(mainLayout);
 
 	setCentralWidget(widget);
-    setStyleSheet(m_winStyle);
-}
-
-void TsPress::initStyleSheets()
-{
-    m_btnStyle = "background-color:  rgb(86, 104, 118);"
-                 " color: white;"
-                 " font-size: 14pt;"
-                 " border-width: 2px;"
-                 " border-radius: 10px;";
-
-    m_lblStyle = "font-size: 28pt;"
-                 " color: green;";
-
-    m_winStyle = "background-color: rgb(220, 220, 220)";
 }

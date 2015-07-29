@@ -55,7 +55,6 @@ protected:
 
 private:
 	void layoutWindow();
-    void initStyleSheets();
 
 	QSignalMapper *m_signalMap;
 	QList<QPushButton *> m_btns;
@@ -63,10 +62,6 @@ private:
 	QPushButton *m_exitButton;
     QPoint m_down;
     QPoint m_up;
-
-    QString m_btnStyle;
-    QString m_lblStyle;
-    QString m_winStyle;
 };
 
 #endif // TSPRESS_H

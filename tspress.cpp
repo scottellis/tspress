@@ -44,6 +44,7 @@ TsPress::TsPress(QWidget *parent)
     m_down.setX(-1);
     m_up.setX(-1);
 
+    initStyleSheets();
 	layoutWindow();
 
 	connect(m_exitButton, SIGNAL(pressed()), SLOT(close()));
@@ -51,7 +52,7 @@ TsPress::TsPress(QWidget *parent)
 
 void TsPress::onPressed(int btn)
 {
-    m_which->setText(QString("Button: %1").arg(btn));
+    m_which->setText(QString::number(btn));
     m_down.setX(-1);
     m_up.setX(-1);
     update();
@@ -104,6 +105,7 @@ void TsPress::layoutWindow()
     for (int i = 0; i < 12; i++) {
         btn = new QPushButton(QString::number(i+1));
         btn->setFixedSize(60, 50);
+        btn->setStyleSheet(m_btnStyle);
         m_signalMap->setMapping(btn, i+1);
 		connect(btn, SIGNAL(pressed()), m_signalMap, SLOT(map()));
 		m_btns.append(btn);
@@ -111,8 +113,10 @@ void TsPress::layoutWindow()
 
     m_exitButton = new QPushButton("Exit");
     m_exitButton->setMinimumSize(60, 50);
-    m_which = new QLabel("Click a button");
-    m_which->setStyleSheet("font-size: 18px;");
+    m_exitButton->setStyleSheet(m_btnStyle);
+
+    m_which = new QLabel("#");
+    m_which->setStyleSheet(m_lblStyle);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
@@ -160,5 +164,19 @@ void TsPress::layoutWindow()
     widget->setLayout(mainLayout);
 
 	setCentralWidget(widget);
-    setAutoFillBackground(true);
+    setStyleSheet(m_winStyle);
+}
+
+void TsPress::initStyleSheets()
+{
+    m_btnStyle = "background-color:  rgb(86, 104, 118);"
+                 " color: white;"
+                 " font-size: 14pt;"
+                 " border-width: 2px;"
+                 " border-radius: 10px;";
+
+    m_lblStyle = "font-size: 28pt;"
+                 " color: green;";
+
+    m_winStyle = "background-color: rgb(220, 220, 220)";
 }

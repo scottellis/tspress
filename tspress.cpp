@@ -51,7 +51,7 @@ TsPress::TsPress(QWidget *parent)
 
 void TsPress::onPressed(int btn)
 {
-    m_which->setText(QString("Button: %1").arg(btn));
+    m_which->setText(QString::number(btn));
     m_down.setX(-1);
     m_up.setX(-1);
     update();
@@ -80,8 +80,9 @@ void TsPress::paintEvent(QPaintEvent *)
     QPainter painter(this);
 
     if (m_down.x() >= 0 && m_down != m_up) {
-        painter.drawLine(m_down.x() - 6, m_down.y(), m_down.x() + 6, m_down.y());
-        painter.drawLine(m_down.x(), m_down.y() - 6, m_down.x(), m_down.y() + 6);
+        qDebug() << "paint down";
+        painter.drawLine(m_down.x() - 8, m_down.y(), m_down.x() + 8, m_down.y());
+        painter.drawLine(m_down.x(), m_down.y() - 8, m_down.x(), m_down.y() + 8);
     }
 
     if (m_up.x() >= 0) {
@@ -89,9 +90,9 @@ void TsPress::paintEvent(QPaintEvent *)
 
         pen.setColor(Qt::red);
         painter.setPen(pen);
-
-        painter.drawLine(m_up.x() - 6, m_up.y(), m_up.x() + 6, m_up.y());
-        painter.drawLine(m_up.x(), m_up.y() - 6, m_up.x(), m_up.y() + 6);
+        qDebug() << "paint up";
+        painter.drawLine(m_up.x() - 8, m_up.y(), m_up.x() + 8, m_up.y());
+        painter.drawLine(m_up.x(), m_up.y() - 8, m_up.x(), m_up.y() + 8);
     }
 }
 
@@ -110,9 +111,10 @@ void TsPress::layoutWindow()
 	}
 
     m_exitButton = new QPushButton("Exit");
-    m_exitButton->setMinimumSize(60, 50);
-    m_which = new QLabel("Click a button");
-    m_which->setStyleSheet("font-size: 18px;");
+    m_exitButton->setMinimumSize(80, 50);
+
+    m_which = new QLabel("#");
+    m_which->setStyleSheet("font-size: 28pt; color: red;");
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
@@ -160,5 +162,4 @@ void TsPress::layoutWindow()
     widget->setLayout(mainLayout);
 
 	setCentralWidget(widget);
-    setAutoFillBackground(true);
 }

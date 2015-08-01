@@ -36,10 +36,10 @@
 
 int main(int argc, char *argv[])
 {
-	QApplication a(argc, argv);
-	TsPress w;
+    QApplication a(argc, argv);
+    TsPress w;
 
-    QString btnStyle = "QPushButton:!pressed {"
+    QString btnStyle = "QPushButton {"
                            " background-color: rgb(86, 104, 118);"
                            " color: white;"
                            " font-size: 14pt;"
@@ -52,9 +52,10 @@ int main(int argc, char *argv[])
                            " font-size: 14pt;"
                            " border-width: 2px;"
                            " border-radius: 10px;"
-                        " };";
+                        " }";
 
     a.setStyleSheet(btnStyle);
+
 
 #ifdef SHOW_FULLSCREEN 
 	w.showFullScreen();

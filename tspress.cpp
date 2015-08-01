@@ -37,16 +37,16 @@
 #include <qdebug.h>
 
 TsPress::TsPress(QWidget *parent)
-	: QMainWindow(parent)
+    : QMainWindow(parent)
 {
-	setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+    setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
 
     m_down.setX(-1);
     m_up.setX(-1);
 
-	layoutWindow();
+    layoutWindow();
 
-	connect(m_exitButton, SIGNAL(pressed()), SLOT(close()));
+    connect(m_exitButton, SIGNAL(pressed()), SLOT(close()));
 }
 
 void TsPress::onPressed(int btn)
@@ -80,7 +80,6 @@ void TsPress::paintEvent(QPaintEvent *)
     QPainter painter(this);
 
     if (m_down.x() >= 0 && m_down != m_up) {
-        qDebug() << "paint down";
         painter.drawLine(m_down.x() - 8, m_down.y(), m_down.x() + 8, m_down.y());
         painter.drawLine(m_down.x(), m_down.y() - 8, m_down.x(), m_down.y() + 8);
     }
@@ -90,7 +89,6 @@ void TsPress::paintEvent(QPaintEvent *)
 
         pen.setColor(Qt::red);
         painter.setPen(pen);
-        qDebug() << "paint up";
         painter.drawLine(m_up.x() - 8, m_up.y(), m_up.x() + 8, m_up.y());
         painter.drawLine(m_up.x(), m_up.y() - 8, m_up.x(), m_up.y() + 8);
     }
@@ -99,16 +97,16 @@ void TsPress::paintEvent(QPaintEvent *)
 void TsPress::layoutWindow()
 {
     QPushButton *btn;
-	m_signalMap = new QSignalMapper(this);
-	connect(m_signalMap, SIGNAL(mapped(int)), SLOT(onPressed(int)));
+    m_signalMap = new QSignalMapper(this);
+    connect(m_signalMap, SIGNAL(mapped(int)), SLOT(onPressed(int)));
 
     for (int i = 0; i < 12; i++) {
         btn = new QPushButton(QString::number(i+1));
         btn->setFixedSize(60, 50);
         m_signalMap->setMapping(btn, i+1);
-		connect(btn, SIGNAL(pressed()), m_signalMap, SLOT(map()));
-		m_btns.append(btn);
-	}
+        connect(btn, SIGNAL(pressed()), m_signalMap, SLOT(map()));
+        m_btns.append(btn);
+    }
 
     m_exitButton = new QPushButton("Exit");
     m_exitButton->setMinimumSize(80, 50);
@@ -158,8 +156,9 @@ void TsPress::layoutWindow()
 
     mainLayout->addLayout(btnLayout);
 
-	QWidget *widget = new QWidget;
+    QWidget *widget = new QWidget;
     widget->setLayout(mainLayout);
 
-	setCentralWidget(widget);
+    setCentralWidget(widget);
 }
+

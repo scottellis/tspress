@@ -36,6 +36,8 @@
 #include <qpainter.h>
 #include <qdebug.h>
 
+#define MIN_WIDTH_FOR_BUTTONS 500
+
 TsPress::TsPress(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -96,16 +98,19 @@ void TsPress::paintEvent(QPaintEvent *)
 
 void TsPress::layoutWindow()
 {
+    QHBoxLayout *btnLayout;
     QPushButton *btn;
     m_signalMap = new QSignalMapper(this);
     connect(m_signalMap, SIGNAL(mapped(int)), SLOT(onPressed(int)));
 
-    for (int i = 0; i < 12; i++) {
-        btn = new QPushButton(QString::number(i+1));
-        btn->setFixedSize(60, 50);
-        m_signalMap->setMapping(btn, i+1);
-        connect(btn, SIGNAL(pressed()), m_signalMap, SLOT(map()));
-        m_btns.append(btn);
+    if (width() > MIN_WIDTH_FOR_BUTTONS) {
+        for (int i = 0; i < 12; i++) {
+            btn = new QPushButton(QString::number(i+1));
+            btn->setFixedSize(60, 50);
+            m_signalMap->setMapping(btn, i+1);
+            connect(btn, SIGNAL(pressed()), m_signalMap, SLOT(map()));
+            m_btns.append(btn);
+        }
     }
 
     m_exitButton = new QPushButton("Exit");
@@ -116,45 +121,59 @@ void TsPress::layoutWindow()
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
-    QHBoxLayout *btnLayout = new QHBoxLayout;
+    if (width() > MIN_WIDTH_FOR_BUTTONS) {
+        btnLayout = new QHBoxLayout;
 
-    for (int i = 0; i < 5; i++) {
-        btnLayout->addWidget(m_btns.at(i));
+        for (int i = 0; i < 5; i++) {
+            btnLayout->addWidget(m_btns.at(i));
 
-        if (i < 4)
-            btnLayout->addStretch();
+            if (i < 4)
+                btnLayout->addStretch();
+        }
+
+        mainLayout->addLayout(btnLayout);
     }
 
-    mainLayout->addLayout(btnLayout);
     mainLayout->addStretch();
 
     btnLayout = new QHBoxLayout;
-    btnLayout->addWidget(m_btns.at(5));
+
+    if (width() > MIN_WIDTH_FOR_BUTTONS)
+        btnLayout->addWidget(m_btns.at(5));
+
     btnLayout->addStretch();
     btnLayout->addWidget(m_exitButton);
     btnLayout->addStretch();
-    btnLayout->addWidget(m_btns.at(6));
+
+    if (width() > MIN_WIDTH_FOR_BUTTONS)
+        btnLayout->addWidget(m_btns.at(6));
+
     mainLayout->addLayout(btnLayout);
 
-    QHBoxLayout *outputLayout = new QHBoxLayout;
-    outputLayout->addStretch();
-    outputLayout->addWidget(m_which);
-    outputLayout->addStretch();
- 
-    mainLayout->addSpacing(8);
-    mainLayout->addLayout(outputLayout);
-    mainLayout->addStretch();
+    if (width() > MIN_WIDTH_FOR_BUTTONS) {
+        QHBoxLayout *outputLayout = new QHBoxLayout;
+        outputLayout->addStretch();
+        outputLayout->addWidget(m_which);
+        outputLayout->addStretch();
 
-    btnLayout = new QHBoxLayout;
+        mainLayout->addSpacing(8);
+        mainLayout->addLayout(outputLayout);
+        mainLayout->addStretch();
 
-    for (int i = 7; i < 12; i++) {
-        btnLayout->addWidget(m_btns.at(i));
+        btnLayout = new QHBoxLayout;
 
-        if (i < 11)
-            btnLayout->addStretch();
+        for (int i = 7; i < 12; i++) {
+            btnLayout->addWidget(m_btns.at(i));
+
+            if (i < 11)
+                btnLayout->addStretch();
+        }
+
+        mainLayout->addLayout(btnLayout);
     }
-
-    mainLayout->addLayout(btnLayout);
+    else {
+        mainLayout->addStretch();
+    }
 
     QWidget *widget = new QWidget;
     widget->setLayout(mainLayout);

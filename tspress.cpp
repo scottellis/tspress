@@ -76,10 +76,20 @@ void TsPress::mouseReleaseEvent(QMouseEvent *event)
 
 void TsPress::paintEvent(QPaintEvent *)
 {
+    QPen pen;
+
     if (m_down.x() < 0 && m_up.x() < 0)
         return;
 
     QPainter painter(this);
+
+    pen.setColor(Qt::black);
+    painter.setPen(pen);
+
+    drawCalPoints(&painter);
+
+    pen.setColor(Qt::blue);
+    painter.setPen(pen);
 
     if (m_down.x() >= 0 && m_down != m_up) {
         painter.drawLine(m_down.x() - 8, m_down.y(), m_down.x() + 8, m_down.y());
@@ -87,12 +97,21 @@ void TsPress::paintEvent(QPaintEvent *)
     }
 
     if (m_up.x() >= 0) {
-        QPen pen;
-
         pen.setColor(Qt::red);
         painter.setPen(pen);
         painter.drawLine(m_up.x() - 8, m_up.y(), m_up.x() + 8, m_up.y());
         painter.drawLine(m_up.x(), m_up.y() - 8, m_up.x(), m_up.y() + 8);
+    }
+}
+
+void TsPress::drawCalPoints(QPainter *painter)
+{
+    int h = height() - 10;
+    int w = width() - 10;
+
+    for (int x = 100, y = 100; x < w && y < h; x += 100, y += 100) {
+        painter->drawLine(x - 5, y, x + 5, y);
+        painter->drawLine(x, y - 5, x, y + 5);
     }
 }
 

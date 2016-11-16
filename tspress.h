@@ -40,13 +40,13 @@
 
 class TsPress : public QMainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	TsPress(QWidget *parent = 0);
+    TsPress(QWidget *parent = 0);
 
 public slots:
-	void onPressed(int btn);
+    void onPressed(int btn);
 
 protected:
     void mousePressEvent(QMouseEvent *);
@@ -54,12 +54,13 @@ protected:
     void paintEvent(QPaintEvent *);
 
 private:
-	void layoutWindow();
+    void layoutWindow();
+    void drawCalPoints(QPainter *);
 
-	QSignalMapper *m_signalMap;
-	QList<QPushButton *> m_btns;
+    QSignalMapper *m_signalMap;
+    QList<QPushButton *> m_btns;
     QLabel *m_which;
-	QPushButton *m_exitButton;
+    QPushButton *m_exitButton;
     QPoint m_down;
     QPoint m_up;
 };

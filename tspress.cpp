@@ -113,6 +113,11 @@ void TsPress::drawCalPoints(QPainter *painter)
         painter->drawLine(x - 5, y, x + 5, y);
         painter->drawLine(x, y - 5, x, y + 5);
     }
+
+    for (int x = 100; x < w; x += 100) {
+        painter->drawLine(x - 5, 100, x + 5, 100);
+        painter->drawLine(x, 95, x, 105);
+    }
 }
 
 void TsPress::layoutWindow()

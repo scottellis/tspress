@@ -78,20 +78,16 @@ void TsPress::paintEvent(QPaintEvent *)
 {
     QPen pen;
 
-    if (m_down.x() < 0 && m_up.x() < 0)
-        return;
-
     QPainter painter(this);
 
     pen.setColor(Qt::black);
     painter.setPen(pen);
 
-    drawCalPoints(&painter);
-
-    pen.setColor(Qt::blue);
-    painter.setPen(pen);
+    drawCalTargets(&painter);
 
     if (m_down.x() >= 0 && m_down != m_up) {
+        pen.setColor(Qt::blue);
+        painter.setPen(pen);
         painter.drawLine(m_down.x() - 8, m_down.y(), m_down.x() + 8, m_down.y());
         painter.drawLine(m_down.x(), m_down.y() - 8, m_down.x(), m_down.y() + 8);
     }
@@ -104,19 +100,40 @@ void TsPress::paintEvent(QPaintEvent *)
     }
 }
 
-void TsPress::drawCalPoints(QPainter *painter)
+void TsPress::drawCalTargets(QPainter *painter)
 {
-    int h = height() - 10;
-    int w = width() - 10;
+    int h = height() - 100;
+    int w = width() - 100;
+    int w_div4 = width() / 4;
 
-    for (int x = 100, y = 100; x < w && y < h; x += 100, y += 100) {
+    for (int x = 100, y = 100; x < w; x += 100) {
         painter->drawLine(x - 5, y, x + 5, y);
         painter->drawLine(x, y - 5, x, y + 5);
     }
 
-    for (int x = 100; x < w; x += 100) {
-        painter->drawLine(x - 5, 100, x + 5, 100);
-        painter->drawLine(x, 95, x, 105);
+    for (int x = 100, y = h; x < w; x += 100) {
+        painter->drawLine(x - 5, y, x + 5, y);
+        painter->drawLine(x, y - 5, x, y + 5);
+    }
+
+    for (int x = 100, y = 200; y < h; y += 100) {
+        painter->drawLine(x - 5, y, x + 5, y);
+        painter->drawLine(x, y - 5, x, y + 5);
+    }
+
+    for (int x = w, y = 200; y < h; y += 100) {
+        painter->drawLine(x - 5, y, x + 5, y);
+        painter->drawLine(x, y - 5, x, y + 5);
+    }
+
+    for (int x = w_div4, y = 200; y < h; y += 100) {
+        painter->drawLine(x - 5, y, x + 5, y);
+        painter->drawLine(x, y - 5, x, y + 5);
+    }
+
+    for (int x = 3 * w_div4, y = 200; y < h; y += 100) {
+        painter->drawLine(x - 5, y, x + 5, y);
+        painter->drawLine(x, y - 5, x, y + 5);
     }
 }
 

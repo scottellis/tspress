@@ -55,7 +55,7 @@ protected:
 
 private:
     void layoutWindow();
-    void drawCalPoints(QPainter *);
+    void drawCalTargets(QPainter *);
 
     QSignalMapper *m_signalMap;
     QList<QPushButton *> m_btns;

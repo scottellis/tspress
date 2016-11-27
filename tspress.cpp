@@ -106,32 +106,32 @@ void TsPress::drawCalTargets(QPainter *painter)
     int w = width() - 100;
     int w_div4 = width() / 4;
 
-    for (int x = 100, y = 100; x < w; x += 100) {
+    for (int x = 100, y = 100; x <= w; x += 100) {
         painter->drawLine(x - 5, y, x + 5, y);
         painter->drawLine(x, y - 5, x, y + 5);
     }
 
-    for (int x = 100, y = h; x < w; x += 100) {
+    for (int x = 100, y = h; x <= w; x += 100) {
         painter->drawLine(x - 5, y, x + 5, y);
         painter->drawLine(x, y - 5, x, y + 5);
     }
 
-    for (int x = 100, y = 200; y < h; y += 100) {
+    for (int x = 100, y = 200; y <= h; y += 100) {
         painter->drawLine(x - 5, y, x + 5, y);
         painter->drawLine(x, y - 5, x, y + 5);
     }
 
-    for (int x = w, y = 200; y < h; y += 100) {
+    for (int x = w, y = 200; y <= h; y += 100) {
         painter->drawLine(x - 5, y, x + 5, y);
         painter->drawLine(x, y - 5, x, y + 5);
     }
 
-    for (int x = w_div4, y = 200; y < h; y += 100) {
+    for (int x = w_div4, y = 200; y <= h; y += 100) {
         painter->drawLine(x - 5, y, x + 5, y);
         painter->drawLine(x, y - 5, x, y + 5);
     }
 
-    for (int x = 3 * w_div4, y = 200; y < h; y += 100) {
+    for (int x = 3 * w_div4, y = 200; y <= h; y += 100) {
         painter->drawLine(x - 5, y, x + 5, y);
         painter->drawLine(x, y - 5, x, y + 5);
     }

@@ -2,7 +2,7 @@
 
 A Qt app for tracking mouse/touchscreen pointer movements.
 
-Used to evaluate a BeagleBone Black touchscreen.
+Used when working on Linux touchscreen drivers.
 
 Assuming Qt5 dev libraries and headers are already installed.
 

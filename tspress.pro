@@ -2,14 +2,13 @@
 # tspress project file
 #
 
-greaterThan(QT_MAJOR_VERSION, 4): cache
+cache
 
 TEMPLATE = app
 
 TARGET = tspress
 
-QT += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += core gui widgets
 
 CONFIG += release
 

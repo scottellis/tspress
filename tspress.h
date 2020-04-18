@@ -35,7 +35,6 @@
 #include <qmainwindow.h>
 #include <qpushbutton.h>
 #include <qlist.h>
-#include <qsignalmapper.h>
 #include <qlabel.h>
 
 class TsPress : public QMainWindow
@@ -57,7 +56,6 @@ private:
     void layoutWindow();
     void drawCalTargets(QPainter *);
 
-    QSignalMapper *m_signalMap;
     QList<QPushButton *> m_btns;
     QLabel *m_which;
     QPushButton *m_exitButton;

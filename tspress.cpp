@@ -141,15 +141,12 @@ void TsPress::layoutWindow()
 {
     QHBoxLayout *btnLayout;
     QPushButton *btn;
-    m_signalMap = new QSignalMapper(this);
-    connect(m_signalMap, SIGNAL(mapped(int)), SLOT(onPressed(int)));
 
     if (width() > MIN_WIDTH_FOR_BUTTONS) {
         for (int i = 0; i < 12; i++) {
             btn = new QPushButton(QString::number(i+1));
             btn->setFixedSize(60, 50);
-            m_signalMap->setMapping(btn, i+1);
-            connect(btn, SIGNAL(pressed()), m_signalMap, SLOT(map()));
+            connect(btn, &QPushButton::pressed, [this, i]{ onPressed(i+1); });
             m_btns.append(btn);
         }
     }

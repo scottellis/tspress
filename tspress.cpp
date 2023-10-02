@@ -34,7 +34,6 @@
 #include <qformlayout.h>
 #include <qevent.h>
 #include <qpainter.h>
-#include <qdebug.h>
 
 #define MIN_WIDTH_FOR_BUTTONS 500
 
@@ -53,7 +52,7 @@ TsPress::TsPress(QWidget *parent)
 
 void TsPress::onPressed(int btn)
 {
-    m_which->setText(QString::number(btn));
+    m_which->setText(QString("Button: %1").arg(btn));
     m_down.setX(-1);
     m_up.setX(-1);
     update();
@@ -61,7 +60,7 @@ void TsPress::onPressed(int btn)
 
 void TsPress::mousePressEvent(QMouseEvent *event)
 {
-    qDebug() << "Down:" << event->x() << event->y();
+    m_which->setText(QString("Down: %1, %2").arg(event->position().x()).arg(event->position().y()));
     m_down = event->pos();
     m_up.setX(-1);
     update();
@@ -69,7 +68,7 @@ void TsPress::mousePressEvent(QMouseEvent *event)
 
 void TsPress::mouseReleaseEvent(QMouseEvent *event)
 {
-    qDebug() << "Up  :" << event->x() << event->y();
+    m_which->setText(QString("Up: %1, %2").arg(event->position().x()).arg(event->position().y()));
     m_up = event->pos();
     update();
 }
@@ -146,7 +145,7 @@ void TsPress::layoutWindow()
         for (int i = 0; i < 12; i++) {
             btn = new QPushButton(QString::number(i+1));
             btn->setFixedSize(60, 50);
-            connect(btn, &QPushButton::pressed, [this, i]{ onPressed(i+1); });
+            connect(btn, &QPushButton::pressed, this, [this, i]{ onPressed(i+1); });
             m_btns.append(btn);
         }
     }

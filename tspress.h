@@ -54,7 +54,8 @@ protected:
 
 private:
     void layoutWindow();
-    void drawCalTargets(QPainter *);
+    void drawCalTargets(QPainter *painter);
+    void drawCross(QPainter *painter, int x, int y);
 
     QList<QPushButton *> m_btns;
     QLabel *m_which;

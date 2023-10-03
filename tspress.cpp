@@ -35,7 +35,7 @@
 #include <qevent.h>
 #include <qpainter.h>
 
-#define MIN_WIDTH_FOR_BUTTONS 500
+#define MIN_WIDTH_FOR_BUTTONS 400
 
 TsPress::TsPress(QWidget *parent)
     : QMainWindow(parent)
@@ -45,6 +45,8 @@ TsPress::TsPress(QWidget *parent)
     m_down.setX(-1);
     m_up.setX(-1);
 
+    // setFixedSize(480, 800);
+
     layoutWindow();
 
     connect(m_exitButton, SIGNAL(pressed()), SLOT(close()));
@@ -52,7 +54,7 @@ TsPress::TsPress(QWidget *parent)
 
 void TsPress::onPressed(int btn)
 {
-    m_which->setText(QString("Button: %1").arg(btn));
+    m_which->setText(QString("Btn: %1").arg(btn));
     m_down.setX(-1);
     m_up.setX(-1);
     update();
@@ -99,40 +101,21 @@ void TsPress::paintEvent(QPaintEvent *)
     }
 }
 
+void TsPress::drawCross(QPainter *painter, int x, int y)
+{
+    painter->drawLine(x - 5, y, x + 5, y);
+    painter->drawLine(x, y - 5, x, y + 5);
+}
+
 void TsPress::drawCalTargets(QPainter *painter)
 {
-    int h = height() - 100;
-    int w = width() - 100;
-    int w_div4 = width() / 4;
+    int h = height();
+    int w = width();
 
-    for (int x = 100, y = 100; x <= w; x += 100) {
-        painter->drawLine(x - 5, y, x + 5, y);
-        painter->drawLine(x, y - 5, x, y + 5);
-    }
-
-    for (int x = 100, y = h; x <= w; x += 100) {
-        painter->drawLine(x - 5, y, x + 5, y);
-        painter->drawLine(x, y - 5, x, y + 5);
-    }
-
-    for (int x = 100, y = 200; y <= h; y += 100) {
-        painter->drawLine(x - 5, y, x + 5, y);
-        painter->drawLine(x, y - 5, x, y + 5);
-    }
-
-    for (int x = w, y = 200; y <= h; y += 100) {
-        painter->drawLine(x - 5, y, x + 5, y);
-        painter->drawLine(x, y - 5, x, y + 5);
-    }
-
-    for (int x = w_div4, y = 200; y <= h; y += 100) {
-        painter->drawLine(x - 5, y, x + 5, y);
-        painter->drawLine(x, y - 5, x, y + 5);
-    }
-
-    for (int x = 3 * w_div4, y = 200; y <= h; y += 100) {
-        painter->drawLine(x - 5, y, x + 5, y);
-        painter->drawLine(x, y - 5, x, y + 5);
+    for (int x = 100; x < (w - 70); x += 100) {
+        for (int y = 100; y < (h - 70); y += 100) {
+            drawCross(painter, x, y);
+        }
     }
 }
 
@@ -141,31 +124,34 @@ void TsPress::layoutWindow()
     QHBoxLayout *btnLayout;
     QPushButton *btn;
 
-    if (width() > MIN_WIDTH_FOR_BUTTONS) {
-        for (int i = 0; i < 12; i++) {
+    int w = width();
+
+    if (w > MIN_WIDTH_FOR_BUTTONS) {
+        for (int i = 0; i < 8; i++) {
             btn = new QPushButton(QString::number(i+1));
-            btn->setFixedSize(60, 50);
+            btn->setFixedSize(50, 40);
             connect(btn, &QPushButton::pressed, this, [this, i]{ onPressed(i+1); });
             m_btns.append(btn);
         }
     }
 
     m_exitButton = new QPushButton("Exit");
-    m_exitButton->setMinimumSize(80, 50);
+    m_exitButton->setMinimumSize(72, 40);
 
     m_which = new QLabel("#");
-    m_which->setStyleSheet("font-size: 28pt; color: red;");
+    m_which->setStyleSheet("font-size: 20pt; color: green;");
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
-    if (width() > MIN_WIDTH_FOR_BUTTONS) {
+    if (w > MIN_WIDTH_FOR_BUTTONS) {
         btnLayout = new QHBoxLayout;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             btnLayout->addWidget(m_btns.at(i));
 
-            if (i < 4)
+            if (i < 2) {
                 btnLayout->addStretch();
+            }
         }
 
         mainLayout->addLayout(btnLayout);
@@ -175,19 +161,21 @@ void TsPress::layoutWindow()
 
     btnLayout = new QHBoxLayout;
 
-    if (width() > MIN_WIDTH_FOR_BUTTONS)
-        btnLayout->addWidget(m_btns.at(5));
+    if (w > MIN_WIDTH_FOR_BUTTONS) {
+        btnLayout->addWidget(m_btns.at(3));
+    }
 
     btnLayout->addStretch();
     btnLayout->addWidget(m_exitButton);
     btnLayout->addStretch();
 
-    if (width() > MIN_WIDTH_FOR_BUTTONS)
-        btnLayout->addWidget(m_btns.at(6));
+    if (width() > MIN_WIDTH_FOR_BUTTONS) {
+        btnLayout->addWidget(m_btns.at(4));
+    }
 
     mainLayout->addLayout(btnLayout);
 
-    if (width() > MIN_WIDTH_FOR_BUTTONS) {
+    if (w > MIN_WIDTH_FOR_BUTTONS) {
         QHBoxLayout *outputLayout = new QHBoxLayout;
         outputLayout->addStretch();
         outputLayout->addWidget(m_which);
@@ -199,11 +187,12 @@ void TsPress::layoutWindow()
 
         btnLayout = new QHBoxLayout;
 
-        for (int i = 7; i < 12; i++) {
+        for (int i = 5; i < 8; i++) {
             btnLayout->addWidget(m_btns.at(i));
 
-            if (i < 11)
+            if (i < 7) {
                 btnLayout->addStretch();
+            }
         }
 
         mainLayout->addLayout(btnLayout);

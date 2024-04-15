@@ -35,12 +35,15 @@
 #include <qevent.h>
 #include <qpainter.h>
 
+#include <qdebug.h>
+
 #define MIN_WIDTH_FOR_BUTTONS 400
 
 TsPress::TsPress(QWidget *parent)
     : QMainWindow(parent)
 {
     setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+    setAttribute(Qt::WA_AcceptTouchEvents);
 
     m_down.setX(-1);
     m_up.setX(-1);
@@ -62,7 +65,7 @@ void TsPress::onPressed(int btn)
 
 void TsPress::mousePressEvent(QMouseEvent *event)
 {
-    m_which->setText(QString("Down: %1, %2").arg(event->position().x()).arg(event->position().y()));
+    m_which->setText(QString("Down: %1, %2").arg(event->pos().x()).arg(event->pos().y()));
     m_down = event->pos();
     m_up.setX(-1);
     update();
@@ -70,7 +73,7 @@ void TsPress::mousePressEvent(QMouseEvent *event)
 
 void TsPress::mouseReleaseEvent(QMouseEvent *event)
 {
-    m_which->setText(QString("Up: %1, %2").arg(event->position().x()).arg(event->position().y()));
+    m_which->setText(QString("Up: %1, %2").arg(event->pos().x()).arg(event->pos().y()));
     m_up = event->pos();
     update();
 }
@@ -207,3 +210,43 @@ void TsPress::layoutWindow()
     setCentralWidget(widget);
 }
 
+namespace  {
+
+QString toString(Qt::TouchPointState state){
+    switch (state) {
+    case Qt::TouchPointPressed: return "Pressed";
+    case Qt::TouchPointMoved: return "Moved";
+    case Qt::TouchPointStationary: return "Stationary";
+    case Qt::TouchPointReleased: return "Released";
+    default: return "???";
+    }
+}
+
+}
+
+bool TsPress::event(QEvent* event)
+{
+    QString type;
+
+    switch (event->type()) {
+    case QEvent::TouchBegin: type ="Begin"; break;
+    case QEvent::TouchUpdate:  type = "Update"; break;
+    case QEvent::TouchEnd:  type ="End"; break;
+    default: return QMainWindow::event(event);
+    }
+
+    const auto e = static_cast<QTouchEvent*>(event);
+    qInfo() << e << ":" << e->type() << e->device() << e->target() << e->window() << "time:" << e->timestamp()
+            << "\n   points" << e->touchPoints()
+            << "\n   states:" << e->touchPointStates()
+            << "\n   modifiers" << e->modifiers();
+
+    auto str = QString("%1 %2 (%3 point(s))\n").arg(type, e->device()->name()).arg(e->touchPoints().count());
+
+    for (const auto &p: e->touchPoints()) {
+        str += QString("(%0,%1 %2)").arg(p.pos().x()).arg(p.pos().y()).arg(toString(p.state()));
+    }
+    m_which->setText(str);
+    return true;
+
+}

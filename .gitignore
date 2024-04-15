@@ -3,3 +3,4 @@ Makefile
 GeneratedFiles/
 Objects/
 *.user
+build

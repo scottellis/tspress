@@ -12,7 +12,7 @@ Assuming Qt5 dev libraries and headers are already installed.
 
 ### Operation
 
-The UI places 5 buttons along the top of the screen.
+The UI places 8 buttons along the edges of the screen.
 
 You can test with a real USB mouse connected or by using the
 touchscreen directly.
@@ -28,7 +28,6 @@ Then run the app
 
     $ export DISPLAY=:0.0 (if not already set)
     $ ./tspress
-
 
 ### Run without X
 

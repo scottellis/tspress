@@ -32,6 +32,8 @@
 #ifndef TSPRESS_H
 #define TSPRESS_H
 
+class QTouchEvent;
+
 #include <qmainwindow.h>
 #include <qpushbutton.h>
 #include <qlist.h>
@@ -48,9 +50,10 @@ public slots:
     void onPressed(int btn);
 
 protected:
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
+    void paintEvent(QPaintEvent *) override;
+    bool event(QEvent *) override;
 
 private:
     void layoutWindow();

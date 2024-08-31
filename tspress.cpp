@@ -62,7 +62,7 @@ void TsPress::onPressed(int btn)
 
 void TsPress::mousePressEvent(QMouseEvent *event)
 {
-    m_which->setText(QString("Down: %1, %2").arg(event->position().x()).arg(event->position().y()));
+    m_which->setText(QString("Down: %1, %2").arg(event->pos().x()).arg(event->pos().y()));
     m_down = event->pos();
     m_up.setX(-1);
     update();
@@ -70,7 +70,7 @@ void TsPress::mousePressEvent(QMouseEvent *event)
 
 void TsPress::mouseReleaseEvent(QMouseEvent *event)
 {
-    m_which->setText(QString("Up: %1, %2").arg(event->position().x()).arg(event->position().y()));
+    m_which->setText(QString("Up: %1, %2").arg(event->pos().x()).arg(event->pos().y()));
     m_up = event->pos();
     update();
 }
